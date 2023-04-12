@@ -8,7 +8,7 @@ export const player = {
   level: 1,
   strength: 0,
   int: 0,
-  attack: 8,
+  attack: 15,
   defense: 2,
   gold: 25,
   exp: 0
@@ -23,13 +23,13 @@ export const createEnemy = (name, health, attack, defense, gold) => ({
 });
 
 export const randomEnemy = () => {
-  const names = ["Regular Skeleton", "Giant Skeleton", "Tiny Skeleton", "Normal Zombie", "Unusual Zombie", "Not An Enemy", "Vacuum Salesman", "Ghost That Haunts You", "Ghost That Does Not Haunt You", "Kai: Destroyer of Worlds", "Noah: Hater of Skyrim", "Mike: Master of CSS", "BeastMaster Jake", "Loot Goblin", "Your Old College Roommate", "Sentient ChatGPT", "Santa (Mall Variant)", "Real Santa", "Billy Mays", "The Train Conductor from Polar Express", "Batman", "Mean Girl", "Your Dentist", "Debt Collector", "Jimmy John's Delivery Driver", "Friday's Code Review", "A Leggo You Just Stepped On", "Your Social Anxiety", "Your Wife's Boyfriend", "Water Bear", "Bug in This Game", "Chinese Balloon", "Global Variable", "YouTube Prankster", "HTML Enjoyer"];
+  const names = ["Regular Skeleton", "Giant Skeleton", "Tiny Skeleton", "Normal Zombie", "Unusual Zombie", "Not An Enemy", "Vacuum Salesman", "Ghost That Haunts You", "Ghost That Does Not Haunt You", "Kai: Destroyer of Worlds", "Noah: Hater of Skyrim", "Mike: Master of CSS", "BeastMaster Jake", "Loot Goblin", "Your Old College Roommate", "Sentient ChatGPT", "Santa (Mall Variant)", "Real Santa", "Billy Mays", "The Train Conductor from Polar Express", "Batman", "Mean Girl", "Your Dentist", "Debt Collector", "Jimmy John's Delivery Driver", "Friday's Code Review", "A Leggo You Just Stepped On", "Your Social Anxiety", "Your Wife's Boyfriend", "Water Bear", "Bug in This Game", "Chinese Balloon", "Global Variable", "YouTube Prankster", "HTML Enjoyer", "HTML Fan"];
   const randomName = Math.floor(Math.random() * names.length);
   const name = names[randomName];
-  const health = Math.floor(Math.random() * 50 ) + 50;
-  const attack = Math.floor(Math.random() * 12 ) + 3;
-  const defense = Math.floor(Math.random() * 10 ) + 5;
-  const gold = Math.floor(Math.random() * 50 ) + 5;
+  const health = randomInt(50, 100);
+  const attack = randomInt(3, 15);
+  const defense = randomInt(5, 10);
+  const gold = randomInt(5, 55);
   return createEnemy(name, health, attack, defense, gold);
 };
 
@@ -58,10 +58,12 @@ export const switchPlayer = () => {
 export const attack = (attacker, defender) => {
 
   let damage = (attacker.attack - defender.defense) < 0 ? 1 : (attacker.attack - defender.defense);
+  damage += randomInt(-5, 5);
   const crit = randomInt(0, 8) === 8;
-  const missed = (randomInt(0,10) > 5);
+  const missed = (randomInt(0,10) === 1);
   if (crit) {
     damage += (damage * 2);
+    console.log('CRITICAL HIT for', damage);
   }
   console.log('missed', missed, 'damage', damage);
   if (!missed) {
@@ -74,7 +76,9 @@ export const attack = (attacker, defender) => {
 };
 
 export const heal = () => {
-  player.health += Math.floor(Math.random() * 20) + 2;
+  const randomHealAmount = randomInt(5, 15);
+  player.health += randomHealAmount;
+  console.log('player healed for', randomHealAmount)
 };
 
 export const flee = () => {
@@ -82,37 +86,43 @@ export const flee = () => {
   endGame("The very act of fleeing lost you 3 health. So sad, but if you're still alive " + `you retire with ${player.gold} gold`);
 };
 
-export const playGame = () => {
+export const playGame = async () => {
   while (!gameState.gameOver) {
     if (gameState.playerTurn) {
       if (player.health <= 0) {
         endGame("Game over, you died ): " + `Enemy health = ${enemy.health}`);
       } else {
         console.log("Your turn");
-        const input = prompt("What do you want to do? (attack/heal/flee)").trim().toLowerCase();
+        const input = prompt(`A wild ${enemy.name} draws near! What do you want to do? (attack/heal/flee)`).trim().toLowerCase();
+        // callTurnModal(`<div>A wild ${enemy.name} draws near!</div>`);
         switch(input) {
         case "attack":
+          console.log('attacking from prompt input')
           attack(player, enemy);
+          updateEnemy(enemy);
           break;
         case "heal":
           heal();
+          updatePlayer(player);
           break;
         case "flee":
           flee();
+          updatePlayer(player);
           break;
         default:
           console.log("Invalid input. Please choose between attack, heal, or flee.");
           break;
         }
+        await pause(20);
         switchPlayer();
       }
-    }
-    else {
+    } else {
       if (enemy.health <= 0) {
         endGame("Enemy Vanquished! " + "You win! " + `Your current health = ${player.health} :O`);
       } else {
         console.log("Enemy turn");
         attack(enemy, player);
+        updatePlayer(player);
         switchPlayer();
       }
     }
@@ -133,13 +143,13 @@ export const callTurnModal = (headline) => { // (headline, player)
   const attackButton = document.getElementById("attack-button");
   const healButton = document.getElementById("heal-button");
   const fleeButton = document.getElementById("flee-button");
-  const startButton = document.getElementById("start-button");
   
   // Modal Buttons
   attackButton.addEventListener('click', () => {
     console.log('clicked attackButton');
     attack(player, enemy);
     updateEnemy(enemy);
+    switchPlayer();
   });
   healButton.addEventListener('click', () => {
     console.log('clicked healButton');
@@ -153,11 +163,14 @@ export const callTurnModal = (headline) => { // (headline, player)
     flee();
     updatePlayer(player);
   });
-  startButton.addEventListener('click', () => {
-    console.log('clicked startButton');
-  });
   document.getElementById('turn-modal').classList.remove('obscured');
 };
+
+const startButton = document.getElementById("start-button");
+startButton.addEventListener('click', () => {
+  console.log('clicked startButton');
+  playGame();
+});
 
 const updatePlayerAttributes = player => `
   <div><span class="attribute-label">Level </span>${player.level}</div>
@@ -178,6 +191,7 @@ const updateEnemyAttributes = enemy => `
 `;
 
 export const updatePlayer = player => {
+  console.log('updating player in UI with new health', player.health)
   document.getElementById('player-list').innerHTML = `
     <div class="player-list-entry">
       <h4>${player.name}</h4>
