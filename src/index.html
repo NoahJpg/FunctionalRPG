@@ -1,22 +1,31 @@
 <html>
   <head>
     <title>RPG</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="RPG.js"></script>
+    <!-- <script src="./js/RPG.js"></script> -->
   </head>
   <body>
 
     <div id="game-container">
-      <h1>Attack flee or heal RPG</h1>
-      <button id="start">Start Game</button>
+      <h1>Attack, Flee, or Heal the RPG</h1>
+      <hr>
+      <div id="player-list">
+        
+      </div>
+      <div id="enemy-list">
 
-
-      <button id="flee">Flee</button>
-      <button id="attack">Attack!</button>
-      <button id="heal">Heal</button>
+      </div>
+      <button id="start-button">Start Game</button>
+      <button id="start-turn-button">start enemy encounter</button>
     </div>
 
-
+    <div id="turn-modal" class="obscured">
+      <h4 id="modal-headline"></h4>
+      <div class="modal-body">
+        <button id="attack-button">Attack</button>
+        <button id="heal-button">Heal</button>
+        <button id="flee-button">Flee</button>
+      </div>
+    </div>
   </body>
 </html>
       

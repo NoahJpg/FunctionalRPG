@@ -1,3 +1,60 @@
 body {
-  background-color: lightblue;
+  background-color: rgb(60, 190, 234);
+}
+
+#turn-modal {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  width: 28rem;
+  height: 16rem;
+  background-color: black;
+  color: white;
+  border-radius: 0.5rem;
+  transition: opacity 300ms ease, scale 300ms ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 1rem;
+}
+
+#turn-modal.obscured {
+  transition: none;
+  opacity: 0;
+  scale: 0.9;
+  pointer-events: none;
+}
+
+#player-list, #enemy-list {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.player-list-entry {
+  min-width: 16rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  background-color: #00000033;
+  border: 1px solid black;
+  padding: 1rem;
+}
+
+.player-list-entry > h4 {
+  margin: 0.5rem 0;
+  font-size: 1.25rem;
+}
+
+.attribute-label {
+  color: rgb(30, 30, 30);
+}
+
+.highlighted {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: rgb(158, 49, 68);
+  margin: 0 0.25rem;
 }

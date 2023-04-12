@@ -1,6 +1,13 @@
+MVP:
 heal function 
 enemy has gold to collect
 character creation: player can choose class at beginning that determines health/attack/defense
 random generated enemy with a random health and random gold amount
 player can choose to flee/heal/fight (turns)
 player increases level based on health of enemy defeated
+
+________
+defeating enemies awards Gold
+random chance to encounter a merchant
+ - single-use items for healing and MP
+
