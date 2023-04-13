@@ -9,7 +9,7 @@
     <a href="#technologies-used">Technologies Used</a> •
     <a href="#setup-and-installation-requirements">Setup and Installation Requirements</a> •
     <a href="#known-bugs">Known Bugs</a> •
-    <a href="#license">License</a>
+    <a href="#MIT-license">License</a>
     
   </p>
 
