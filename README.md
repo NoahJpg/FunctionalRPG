@@ -7,7 +7,7 @@
   <p align="center">
     <a href="#description">Description</a> •
     <a href="#technologies-used">Technologies Used</a> •
-    <a href="#setup/installation-requirements">Setup and Installation Requirements</a> •
+    <a href="#Setup">Setup</a> •
     <a href="#known-bugs">Known Bugs</a> •
     <a href="#MIT-license">License</a>
     
@@ -35,7 +35,7 @@
 
 _INSERT DESCRIPTION_
 
-## Setup/Installation Requirements
+## Setup
 
 * _Install all packages with $ npm install._
 * _Build the project using webpack with $ npm run build_
