@@ -31,10 +31,6 @@
 * _Jest_
 * _Babel_
 
-## Description
-
-_INSERT DESCRIPTION_
-
 ## Setup
 
 * _Install all packages with $ npm install._
